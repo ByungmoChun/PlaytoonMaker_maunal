@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>플레이툰 메이커 사용 설명서 (초안 · 1~5장)</title>
+<title>플레이툰 메이커 사용 설명서 (초안 · 1~7장)</title>
 <style>
   :root{
     --red:#CC0000; --ink:#1a1a1a; --muted:#6b6b6b; --line:#e6e6e6;
@@ -74,11 +74,11 @@
   <h1>플레이툰 메이커 사용 설명서</h1>
   <p>인터랙티브 웹툰을 만드는 가장 쉬운 길</p>
   <p>대상: 처음 사용하는 창작자</p>
-  <span class="badge">초안 · 1~5장 · v0.6.0 RC.5 기준</span>
+  <span class="badge">초안 · 1~7장 · v0.6.0 RC.5 기준</span>
 </header>
 
 <div class="draftbar">
-  📝 <b>이 문서는 초안입니다.</b> 톤과 깊이를 확인하기 위한 1~5장 버전이며, 6~8장(인터랙션·미리보기·발행·부록)은 추가 화면 확인 후 작성됩니다.
+  📝 <b>이 문서는 초안입니다.</b> 톤과 깊이를 확인하기 위한 1~7장 버전이며, 8장(부록)과 발행 세부는 추가 화면 확인 후 작성됩니다.
   파란 박스(<b>확인 필요</b>)는 기획 의도와 실제 구현을 모모님이 대조해 주실 부분입니다.
 </div>
 
@@ -90,7 +90,9 @@
     <li><a href="#c3">첫 프로젝트 만들기</a> <span class="sub">— 테이크와 패널</span></li>
     <li><a href="#c4">리소스 채우기</a> <span class="sub">— 그림·소리·캐릭터 올리기</span></li>
     <li><a href="#c5">움직임 만들기</a> <span class="sub">— 등장·유지·퇴장과 트랙</span></li>
-    <li><span class="sub" style="color:#bbb">6~8장 (작성 예정)</span></li>
+    <li><a href="#c6">인터랙션 만들기</a> <span class="sub">— 노드로 반응·분기 짜기</span></li>
+    <li><a href="#c7">확인하고 발행하기</a> <span class="sub">— 시뮬레이션·미리보기·발행</span></li>
+    <li><span class="sub" style="color:#bbb">8장 (작성 예정)</span></li>
   </ol>
 </nav>
 
@@ -405,6 +407,177 @@
 
   <div class="note">💡 <b>작업 순서 요약</b> · 이미지를 무대에 올리기 → 상태 탭(Enter/Idle/Exit) 선택 → ＋Track으로 움직임 종류 추가 → 속성 줄에 키프레임 찍고 값 지정 → ▶로 확인.</div>
   <div class="verify"><b>확인 필요(기획 대조)</b> · ① <code>＋ 타임라인</code>과 <code>＋ Track</code>의 역할 차이 ② ‘보간 편집’·‘다른 액션으로 보내기’ 등 키프레임 편집창의 추가 옵션 설명 수위 ③ Idle 상태의 반복(Loop) 동작 방식.</div>
+</section>
+
+<!-- ===================== 6장 (인터랙션 만들기) ===================== -->
+<section id="c6">
+  <h2 class="chap"><span class="num">6장</span>인터랙션 만들기</h2>
+  <p class="lead">독자의 터치·선택에 이야기가 <b>반응</b>하게 만듭니다. 클릭하면 다음 장면으로 넘어가거나, 선택에 따라 이야기가 갈라지는 연출을 ‘노드’로 짭니다. 플레이툰을 ‘함께 노는 이야기’로 만드는 단계입니다.</p>
+
+  <h3>인터랙션은 테이크 단위로 설계합니다</h3>
+  <p>인터랙션은 <b>테이크</b>에 붙습니다. 계층에서 테이크를 고른 뒤, 인스펙터의 <b>인터랙티브</b> 항목에서 <span class="ui">시퀀스 편집</span>을 누르면 노드 편집 창이 열립니다. (그 옆 <span class="ui">분기 편집</span>·<span class="ui">분기 Take</span>·<span class="ui">유료</span>는 분기·과금 관련 설정입니다.)</p>
+  <div class="note">💡 5장의 ‘움직임’이 한 테이크 <b>안에서</b> 요소가 어떻게 움직이는지를 정했다면, 6장의 ‘인터랙션’은 테이크 <b>사이를</b> 어떻게 오갈지, 독자의 행동에 어떻게 반응할지를 정합니다.</div>
+
+  <h3>노드 편집 창 둘러보기</h3>
+  <p>시퀀스 편집을 누르면 <b>노드 시퀀스</b> 창이 열립니다(제목에 대상 테이크가 표시됩니다). 노드는 ‘하나의 동작 블록’이고, 이 블록들을 선으로 이어 “이런 일이 생기면 → 이렇게 반응한다”는 흐름을 만듭니다.</p>
+  <figure>
+    <img src="img/17_node_sequence.png" alt="노드 시퀀스 편집 창">
+    <figcaption>그림 6-1. 노드 시퀀스 창 — 왼쪽 노드 목록, 가운데 캔버스(노드를 잇는 곳), 오른쪽 속성(Inspector)</figcaption>
+  </figure>
+  <ul>
+    <li><b>왼쪽</b> — 추가할 수 있는 노드 목록(아래 표 참고).</li>
+    <li><b>가운데</b> — 노드를 배치하고, 한 노드의 연결점에서 다른 노드로 <b>드래그해 선을 이어</b> 흐름을 만드는 캔버스. 오른쪽 위 <span class="ui">Fit-to-content</span>로 전체 보기를 맞출 수 있습니다.</li>
+    <li><b>오른쪽</b> — <span class="ui">Inspector</span>(고른 노드의 세부 설정) · <span class="ui">Variables</span>(변수) · <span class="ui">Debug</span> 탭.</li>
+    <li><b>아래</b> — 작업은 <b>자동 저장</b>되며, 다 되면 <span class="ui">적용</span>, 그만두려면 <span class="ui">닫기</span>.</li>
+  </ul>
+
+  <h3>노드의 세 종류</h3>
+  <p>노드는 성격에 따라 세 묶음으로 나뉩니다. 대개 <b>트리거(계기) → (조건) → 액션(반응)</b> 순으로 잇습니다.</p>
+  <table>
+    <tr><th style="width:120px">묶음</th><th style="width:150px">노드</th><th>의미</th></tr>
+    <tr><td rowspan="6"><b>Trigger</b><br>(계기)</td><td>Click</td><td>독자가 눌렀을 때</td></tr>
+    <tr><td>Scroll Enter</td><td>스크롤로 이 지점에 들어왔을 때</td></tr>
+    <tr><td>Scroll Leave</td><td>스크롤로 이 지점을 벗어났을 때</td></tr>
+    <tr><td>Timer End</td><td>정해진 시간이 끝났을 때</td></tr>
+    <tr><td>Drag End</td><td>끌기 동작이 끝났을 때</td></tr>
+    <tr><td>Swipe</td><td>쓸어넘기는 동작을 했을 때</td></tr>
+    <tr><td><b>Condition</b><br>(조건)</td><td>Condition</td><td>어떤 조건이 맞을 때만 다음으로 넘어가도록 판단</td></tr>
+    <tr><td rowspan="4"><b>Action</b><br>(반응)</td><td>Clip 호출</td><td>특정 움직임(클립)을 실행</td></tr>
+    <tr><td>변수 설정</td><td>값을 저장·변경(예: 선택 기록)</td></tr>
+    <tr><td>Take 차단</td><td>특정 테이크로의 진행을 막음</td></tr>
+    <tr><td>분기 선택</td><td>다음에 보여 줄 테이크를 고름(이야기 갈라짐)</td></tr>
+  </table>
+
+  <h3>예시: 클릭하면 다른 장면으로 갈라지기</h3>
+  <p>그림 6-1의 캔버스에는 선택지 분기가 만들어져 있습니다. 두 개의 <code>Trigger: onClick</code>이 각각 <code>SelectBranch: Take 3</code>·<code>SelectBranch: Take 4</code>로 이어져 있는데, 이는 “<b>어느 버튼을 클릭하느냐에 따라 Take 3 또는 Take 4로 이야기가 갈라진다</b>”는 뜻입니다. 만드는 순서는 이렇습니다.</p>
+  <ol class="step">
+    <li>왼쪽에서 <b>Trigger → Click</b> 노드를 캔버스에 추가합니다(‘클릭하면’이라는 계기).</li>
+    <li>왼쪽에서 <b>Action → 분기 선택</b> 노드를 추가하고, Inspector의 <code>targetTakeName</code>에서 이동할 테이크(예: Take 3)를 지정합니다.</li>
+    <li>Click 노드 아래점에서 분기 선택 노드로 <b>드래그해서 선을 이어</b> 연결합니다.</li>
+    <li>선택지가 둘이라면 같은 방식으로 한 쌍을 더 만들어 다른 테이크(예: Take 4)로 잇습니다.</li>
+    <li>오른쪽 <span class="ui">Inspector</span>에서 각 노드의 세부(대상 버튼·이동 테이크 등)를 확인·수정합니다.</li>
+  </ol>
+  <div class="note">💡 독자가 무엇을 누르면(Trigger) → 무엇이 일어난다(Action)를 한 쌍으로 생각하면 노드 짜기가 쉬워집니다. 조건이 필요할 때만 그 사이에 Condition을 끼웁니다.</div>
+
+  <h3>노드 세부 설정 — Inspector</h3>
+  <p>노드를 클릭하면 오른쪽 <span class="ui">Inspector</span>에 그 노드의 세부 설정이 나타납니다. 예를 들어 <code>Trigger: onClick</code>을 고르면 다음을 정할 수 있습니다.</p>
+  <figure>
+    <img src="img/18_node_inspector.png" alt="노드 Inspector - onClick 설정">
+    <figcaption>그림 6-2. 노드를 고르면 오른쪽 Inspector에 세부 설정이 나타남(onClick의 button_name·Once·단일 트리거)</figcaption>
+  </figure>
+  <table>
+    <tr><th style="width:150px">항목</th><th>뜻</th></tr>
+    <tr><td>button_name</td><td>어느 버튼을 눌렀을 때 발동할지, 대상 버튼의 이름을 지정합니다(예: <code>bt_3</code>).</td></tr>
+    <tr><td>Once</td><td>켜면 이 트리거가 <b>한 번만</b> 작동합니다.</td></tr>
+    <tr><td>단일 트리거</td><td>켜면 동시에 여러 번 발동되지 않도록 하나의 트리거로만 처리합니다.</td></tr>
+  </table>
+  <p>설정한 값은 캔버스의 <b>노드 카드 본문에도 표시</b>됩니다(예: Once를 켜면 카드에 ‘Once’가 표시). 그래서 창을 닫지 않고도 각 노드가 어떻게 설정됐는지 한눈에 알 수 있습니다.</p>
+  <p>액션 노드도 마찬가지로 Inspector에서 세부를 정합니다. <code>분기 선택(SelectBranch)</code> 노드를 고르면 <b>targetTakeName</b> 항목이 나오는데, 여기서 <b>이동할 목표 테이크</b>를 드롭다운으로 고릅니다(예: Take 3).</p>
+  <figure>
+    <img src="img/22_selectbranch_inspector.png" alt="SelectBranch 노드의 Inspector">
+    <figcaption>그림 6-2a. 분기 선택(SelectBranch) 노드 — <code>targetTakeName</code>으로 이동할 테이크를 지정. Once가 켜진 트리거 카드에는 ‘Once’가 표시됨</figcaption>
+  </figure>
+
+  <h3>값 기억하기 — Variables(변수)</h3>
+  <p>독자의 선택이나 진행 상태를 <b>기억</b>해 두려면 변수를 씁니다. 오른쪽 <span class="ui">Variables</span> 탭에서 만듭니다.</p>
+  <figure style="max-width:360px;margin-left:auto;margin-right:auto;background:#2a2a2a">
+    <img src="img/19_node_variables.png" alt="Variables 탭 - 변수 만들기">
+    <figcaption>그림 6-3. Variables 탭 — 이름·타입·초기값·scope를 정해 변수를 추가</figcaption>
+  </figure>
+  <table>
+    <tr><th style="width:120px">항목</th><th>뜻</th></tr>
+    <tr><td>이름</td><td>변수 이름(영문/숫자/밑줄, 영문으로 시작).</td></tr>
+    <tr><td>타입</td><td>값의 종류(정수 int 등).</td></tr>
+    <tr><td>초기값</td><td>처음 시작할 때의 값.</td></tr>
+    <tr><td>scope</td><td>변수가 유효한 범위. <b>Take 지역</b>(그 테이크 안에서만) 또는 <b>EPISODE 전역</b>(작품 전체에서).</td></tr>
+  </table>
+  <div class="note">💡 “이 선택지를 골랐다”를 전역 변수로 기억해 두면, 나중 테이크에서 Condition으로 그 값을 확인해 이야기를 다르게 전개할 수 있습니다.</div>
+
+  <h3>트리거 값 시험하기 — Debug(드라이런)</h3>
+  <p>오른쪽 <span class="ui">Debug</span> 탭은 노드 에디터 안에서 <b>트리거가 어떤 입력에 어떻게 반응하는지 시험</b>하는 샘플 창입니다. 탭 안의 작은 영역(‘여기서 클릭/드래그’)에서 직접 조작해 보면, 그 입력의 실제 측정값이 표시됩니다.</p>
+  <table>
+    <tr><th style="width:150px">표시 값</th><th>뜻</th></tr>
+    <tr><td>이벤트</td><td>인식된 동작 종류(예: <code>dragRelease</code> = 드래그 후 놓기)</td></tr>
+    <tr><td>direction</td><td>방향(예: right)</td></tr>
+    <tr><td>velocity</td><td>속도(px/s)</td></tr>
+    <tr><td>distance</td><td>이동 거리(px)</td></tr>
+    <tr><td>duration</td><td>걸린 시간(ms)</td></tr>
+  </table>
+  <p>맨 아래에는 <b>MATCH / NO MATCH</b>가 표시됩니다. 방금 조작한 입력이 이 테이크의 트리거 조건에 <b>걸리면 MATCH</b>, 걸리지 않으면 <b>NO MATCH</b>입니다. 이를 보며 Swipe·Drag End 트리거의 방향·속도·거리 기준을 카드에 알맞게 조정할 수 있습니다.</p>
+  <figure>
+    <img src="img/24_debug_dryrun_match.png" alt="Debug 드라이런 측정값과 NO MATCH">
+    <figcaption>그림 6-4. 드라이런 — 왼쪽→오른쪽 드래그의 측정값(direction right, velocity 193px/s 등)과 판정 결과(NO MATCH)</figcaption>
+  </figure>
+  <div class="note">💡 드라이런은 <b>발행 전에 트리거 감도를 맞추는 개발용 도구</b>입니다. 작품 전체를 독자처럼 플레이해 보는 것은 다음 장의 <span class="ui">▶ 시뮬레이션</span>에서 합니다.</div>
+
+  <h3>전체 이야기 흐름 보기 — 분기 편집</h3>
+  <p>지금까지의 <span class="ui">시퀀스 편집</span>이 <b>한 테이크 안</b>의 반응을 짜는 곳이라면, <span class="ui">분기 편집</span>은 <b>에피소드 전체</b>의 테이크들이 어떻게 이어지고 갈라지는지를 지도처럼 보여 주는 곳입니다. 인스펙터의 <span class="ui">분기 편집</span>을 누르면 <b>에피소드 분기 그래프</b> 창이 열립니다.</p>
+  <figure>
+    <img src="img/21_episode_branch_graph.png" alt="에피소드 분기 그래프">
+    <figcaption>그림 6-5. 에피소드 분기 그래프 — 테이크들의 연결과 갈라짐을 한눈에. 노란 선이 분기(예: Take 2에서 Take 3·Take 4로 갈라짐)</figcaption>
+  </figure>
+  <ul>
+    <li>각 상자가 하나의 <b>테이크</b>이고, 상자를 잇는 선이 <b>이야기 진행 방향</b>입니다.</li>
+    <li>한 지점에서 여러 갈래로 나뉘는 <b>노란 선</b>이 선택지 분기입니다(예: <code>Take 2 · Branch 2</code>에서 Take 3과 Take 4로 갈라짐).</li>
+    <li>이 창은 에피소드 전체 구조를 조망하면서 <b>테이크 연결을 직접 수정할 수 있는 편집 창</b>입니다. 개별 노드 편집(노드 카탈로그·우측 패널)은 여기서 하지 않고, 세부 반응은 각 테이크의 <span class="ui">시퀀스 편집</span>에서 짭니다.</li>
+    <li>작업은 자동 저장되며, 오른쪽 위 <span class="ui">Fit-to-content</span>로 전체가 보이도록 맞출 수 있습니다.</li>
+  </ul>
+  <div class="note">💡 <b>두 편집의 관계</b> · <span class="ui">시퀀스 편집</span> = 한 장면 안의 반응(무엇을 누르면 어디로), <span class="ui">분기 편집</span> = 작품 전체의 갈림길 지도이자 테이크 연결을 고치는 곳. 큰 흐름은 분기 편집에서 잡고, 각 장면의 반응은 시퀀스 편집에서 채웁니다.</div>
+
+  <div class="check">✅ <b>여기까지 했다면</b> 독자의 행동에 반응하고 이야기가 갈라지는 인터랙션까지 만들 수 있습니다. 다음 장에서는 완성한 작품을 <b>미리보고 발행</b>합니다.</div>
+</section>
+
+<!-- ===================== 7장 (확인하고 발행하기) ===================== -->
+<section id="c7">
+  <h2 class="chap"><span class="num">7장</span>확인하고 발행하기</h2>
+  <p class="lead">완성한 작품을 독자 입장에서 직접 플레이해 확인하고, 문제가 없으면 저장·발행합니다.</p>
+
+  <h3>독자처럼 플레이해 보기 — 시뮬레이션</h3>
+  <p>상단 오른쪽의 <span class="ui">▶ 시뮬레이션</span>을 누르면, 완성된 플레이툰을 <b>실제 독자가 보는 것과 똑같이</b> 실행해 보는 창이 세로 화면으로 열립니다. 스크롤로 테이크를 넘기고, 버튼을 눌러 분기를 선택하는 등 만든 인터랙션을 직접 체험할 수 있습니다.</p>
+  <figure>
+    <img src="img/23_simulation.png" alt="시뮬레이션 실행 창">
+    <figcaption>그림 7-1. 시뮬레이션 창 — 독자처럼 스크롤·터치하며 작품을 실행. 가운데 ‘아래로 스크롤’ 안내가 보임</figcaption>
+  </figure>
+  <table>
+    <tr><th style="width:160px">위치</th><th>기능</th></tr>
+    <tr><td>상단</td><td>뒤로가기, 작품명, 진행률(%), 설정(⚙)</td></tr>
+    <tr><td>가운데</td><td>‘아래로 스크롤 ⌄’ 안내 — 독자가 스크롤로 다음 장면으로 넘어감</td></tr>
+    <tr><td>하단</td><td>재생 속도(0.5×·1×·1.5×·2×), ▶ 재생, 음악·음량, 전체화면</td></tr>
+  </table>
+  <div class="note">💡 <b>시뮬레이션과 드라이런의 차이</b> · 6장의 <span class="ui">Debug 드라이런</span>은 노드 에디터 안에서 <b>개별 트리거의 값·감도</b>를 맞추는 개발용 도구이고, <span class="ui">▶ 시뮬레이션</span>은 <b>작품 전체를 독자처럼 처음부터 플레이</b>해 보는 실행 창입니다.</div>
+
+  <h3>편집하며 바로 보기 — Preview(미리보기)</h3>
+  <p>상단 오른쪽 <span class="ui">▶ Preview</span>를 누르면, 별도 창 대신 <b>에디터 오른쪽에 미리보기 패널</b>이 붙어 편집 화면과 나란히 결과를 바로 확인할 수 있습니다. 장면·말풍선·캐릭터가 실제 렌더링된 모습으로 표시되어, 작업하면서 즉시 확인할 때 편리합니다.</p>
+  <figure>
+    <img src="img/25_preview.png" alt="Preview 미리보기 패널">
+    <figcaption>그림 7-2. Preview — 에디터 오른쪽에 미리보기 패널이 붙어, 편집하며 실제 결과를 바로 확인</figcaption>
+  </figure>
+  <p>미리보기 패널 위쪽에는 다음 컨트롤이 있습니다.</p>
+  <table>
+    <tr><th style="width:150px">컨트롤</th><th>기능</th></tr>
+    <tr><td>⏸ 일시정지 / ⏹ 정지</td><td>미리보기 재생을 멈추거나 정지</td></tr>
+    <tr><td>Auto · 120</td><td>자동 재생 관련 설정값</td></tr>
+    <tr><td>보유 코인 · 100</td><td>유료(코인) 동작을 시험하기 위한 가상 코인 잔량</td></tr>
+    <tr><td>Debug</td><td>디버그 표시를 켜고 끔</td></tr>
+    <tr><td>✕</td><td>미리보기 패널 닫기</td></tr>
+  </table>
+  <div class="note">💡 <b>Preview와 시뮬레이션</b> · <span class="ui">Preview</span>는 편집 화면 옆에서 바로 확인하는 <b>작업용 미리보기</b>, <span class="ui">▶ 시뮬레이션</span>은 독자용 실행 창에서 <b>처음부터 끝까지 플레이</b>해 보는 최종 점검용으로 나눠 쓰면 좋습니다.</div>
+
+  <h3>테이크 속성 — 인터랙티브 · 유료 · BGM</h3>
+  <p>테이크를 고르면 인스펙터에서 테이크별 속성도 확인·설정할 수 있습니다.</p>
+  <table>
+    <tr><th style="width:150px">항목</th><th>내용</th></tr>
+    <tr><td>일반</td><td>테이크 높이(px), 테이크 배경(기본은 프로젝트 배경색 상속)</td></tr>
+    <tr><td>인터랙티브</td><td><span class="ui">시퀀스 편집</span>·<span class="ui">분기 편집</span>(6장)·분기 Take 설정</td></tr>
+    <tr><td>유료</td><td>이 테이크를 유료로 설정(코인 등으로 열람)</td></tr>
+    <tr><td>BGM</td><td>배경음악 동작(inherit/play/stop), Fade Out, 커브 편집</td></tr>
+    <tr><td>오디오 마스터</td><td>이 테이크 전용 오디오 조정(끄면 프로젝트 기본값 사용)</td></tr>
+  </table>
+  <div class="verify"><b>확인 필요(기획 대조)</b> · ‘Auto · 120’의 정확한 의미, ‘유료’ 설정의 실제 동작(코인 차감·잠금 방식). 관련 화면으로 보완 예정.</div>
+
+  <h3>저장하고 발행하기</h3>
+  <p>작업은 자동 저장되지만, 프로젝트 파일로 보관하거나 작품을 배포하려면 저장·발행 과정을 거칩니다.</p>
+  <div class="verify"><b>확인 필요(기획 대조)</b> · ① 프로젝트 저장(<code>.pmp</code>) 경로(파일 메뉴 등)와 방법 ② 작품을 플랫폼에 올리는 ‘발행’ 절차의 유무·위치 ③ 발행 시 유료/무료·공개 설정 등. 해당 화면을 확인해 채울 예정입니다.</div>
 </section>
 
 </main>
